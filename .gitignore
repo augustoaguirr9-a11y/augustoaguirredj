@@ -1,0 +1,8 @@
+# System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Original photographs are preserved locally; the optimized WebP files in
+# assets/img are the versions used by the published site.
+assets/photos/source/
