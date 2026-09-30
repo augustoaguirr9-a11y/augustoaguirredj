@@ -68,3 +68,66 @@
     max-width: 100%;
   }
 }
+
+/* Mejora visual — sección Contrataciones */
+.booking::before {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(5,5,5,.94) 0%,
+      rgba(5,5,5,.78) 45%,
+      rgba(5,5,5,.48) 75%,
+      rgba(5,5,5,.35) 100%
+    ),
+    linear-gradient(
+      0deg,
+      rgba(5,5,5,.78),
+      rgba(5,5,5,.30) 60%,
+      rgba(5,5,5,.55)
+    ) !important;
+}
+
+.booking-title {
+  max-width: 1050px;
+  font-size: clamp(58px, 8vw, 135px) !important;
+  line-height: .80 !important;
+  text-shadow: 0 5px 28px rgba(0,0,0,.35);
+}
+
+.booking-inner > p {
+  text-shadow: 0 2px 12px rgba(0,0,0,.7);
+}
+
+.booking-cta {
+  background: var(--acid) !important;
+  color: #050505 !important;
+  border: 0 !important;
+  box-shadow: 0 12px 35px rgba(204,255,0,.18) !important;
+}
+
+.booking-cta span {
+  color: #050505 !important;
+}
+
+.booking-cta:hover {
+  background: #e0ff45 !important;
+  color: #050505 !important;
+  transform: translateY(-3px);
+}
+
+@media(max-width:760px) {
+  .booking-title {
+    font-size: clamp(48px, 14vw, 70px) !important;
+    line-height: .82 !important;
+  }
+
+  .booking::before {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(5,5,5,.78),
+        rgba(5,5,5,.84) 65%,
+        rgba(5,5,5,.92)
+      ) !important;
+  }
+}
