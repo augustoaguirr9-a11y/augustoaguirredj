@@ -122,7 +122,7 @@
       var isClone = Boolean(card.closest('[aria-hidden="true"]'));
       card.setAttribute("role", "link");
       card.setAttribute("tabindex", isClone ? "-1" : "0");
-      card.setAttribute("aria-label", "Ver más fotos de Augusto Aguirre en Instagram");
+      card.setAttribute("aria-label", "Ver mÃ¡s fotos de Augusto Aguirre en Instagram");
       card.addEventListener("click", function () { window.open(instagram, "_blank", "noopener"); });
       card.addEventListener("keydown", function (event) {
         if (event.key === "Enter" || event.key === " ") {
@@ -136,7 +136,77 @@
   function initYear() { document.querySelectorAll("[data-year]").forEach(function (el) { el.textContent = new Date().getFullYear(); }); }
 
   function boot() {
-    safe(initContact, "contact"); safe(initSplash, "splash"); safe(initNavigation, "navigation"); safe(initMotion, "motion"); safe(initSafetyReveal, "safety reveal"); safe(initCounters, "counters"); safe(initMagnetic, "magnetic"); safe(initMarqueeGallery, "marquee gallery"); safe(initGalleryLinks, "gallery links"); safe(initYear, "year");
+    safe(initContact, "contact"); safe(initSplash, "splash"); safe(initNavigation, "navigation"); safe(initMotion, "motion"); safe(initSafetyReveal, "safety reveal"); safe(loadYouTubeStats, "counters"); safe(initMagnetic, "magnetic"); safe(initMarqueeGallery, "marquee gallery"); safe(initGalleryLinks, "gallery links"); safe(initYear, "year");
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
 })();
+
+/* YouTube stats â€” actualizaciÃ³n automÃ¡tica */
+async function loadYouTubeStats() {
+  try {
+    const response = await fetch("/api/youtube-stats");
+    if (!response.ok) throw new Error("YouTube API error");
+
+    const data = await response.json();
+
+    if (!data.views && !data.subscribers) return;
+
+    document.querySelectorAll(".stat").forEach(function(stat) {
+      const label = stat.textContent.toUpperCase();
+      const counter = stat.querySelector("[data-count]");
+
+      if (!counter) return;
+
+      let value = null;
+      let suffix = "";
+
+      if (label.includes("VISUALIZACIONES EN YOUTUBE")) {
+        value = data.views;
+      }
+
+      if (label.includes("SUSCRIPTORES EN YOUTUBE")) {
+        value = data.subscribers;
+      }
+
+      if (value === null) return;
+
+      if (value >= 1000000) {
+        counter.dataset.count = (value / 1000000).toFixed(2);
+        suffix = "M";
+      } else if (value >= 1000) {
+        counter.dataset.count = (value / 1000).toFixed(2);
+        suffix = "K";
+      } else {
+        counter.dataset.count = value.toString();
+      }
+
+      counter.dataset.suffix = suffix;
+
+      /* Reiniciar la animación */
+      counter.textContent = "0" + suffix;
+
+      const end = Number(counter.dataset.count);
+      const decimals = String(counter.dataset.count).split(".")[1]?.length || 0;
+      const duration = 1500;
+      const startTime = performance.now();
+
+      function animateCounter(now) {
+        const progress = Math.min((now - startTime) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = end * eased;
+
+        counter.textContent =
+          current.toFixed(decimals) + suffix;
+
+        if (progress < 1) {
+          requestAnimationFrame(animateCounter);
+        }
+      }
+
+      requestAnimationFrame(animateCounter);
+    });
+
+  } catch (error) {
+    console.warn("No se pudieron actualizar las estadísticas de YouTube:", error);
+  }
+}
