@@ -54,3 +54,17 @@
 .booking-note{margin:15px 0 0!important;color:rgba(244,245,239,.62)!important;font:500 9px/1.4 var(--mono)!important;letter-spacing:.08em;text-transform:uppercase}
 .booking-cta{box-shadow:0 12px 35px rgba(0,0,0,.26)}.booking-cta:hover{box-shadow:0 16px 42px rgba(204,255,0,.16)}
 @media(max-width:760px){.booking-note{font-size:8px!important}}
+
+/* Fix responsive: giant section titles */
+.giant-title {
+  max-width: 100%;
+  font-size: clamp(70px, 10vw, 180px);
+  overflow-wrap: normal;
+}
+
+@media (max-width: 760px) {
+  .giant-title {
+    font-size: min(14vw, 54px) !important;
+    max-width: 100%;
+  }
+}
