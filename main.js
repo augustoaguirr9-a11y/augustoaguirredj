@@ -9,30 +9,6 @@
     document.querySelectorAll("[data-whatsapp]").forEach(function (el) { el.href = link; });
   }
 
-  function initBookingModal() {
-    var modal = document.querySelector("[data-booking-modal]");
-    if (!modal) return;
-    var close = modal.querySelector("[data-booking-modal-close]");
-    var form = modal.querySelector("[data-booking-form]");
-    function dismiss() { modal.classList.add("is-closed"); }
-    if (close) close.addEventListener("click", dismiss);
-    modal.addEventListener("click", function (event) { if (event.target === modal) dismiss(); });
-    window.addEventListener("keydown", function (event) { if (event.key === "Escape") dismiss(); });
-    if (!form) return;
-    form.addEventListener("submit", function (event) {
-      event.preventDefault();
-      var data = new FormData(form);
-      var fields = [
-        ["Nombre", data.get("nombre")], ["Email", data.get("email")], ["Teléfono", data.get("telefono")],
-        ["Fecha", data.get("fecha")], ["Tipo de evento", data.get("evento")], ["Venue / ciudad", data.get("venue")], ["Mensaje", data.get("mensaje") || "-"]
-      ];
-      var message = "Hola Augusto, quiero consultar una fecha.\n\n" + fields.map(function (field) { return field[0] + ": " + field[1]; }).join("\n");
-      var source = window.__BRAND__ && window.__BRAND__.contact.whatsapp;
-      var url = (source || "https://wa.me/").split("?")[0] + "?text=" + encodeURIComponent(message);
-      window.open(url, "_blank", "noopener");
-    });
-  }
-
   function initSplash() {
     var splash = document.querySelector(".splash");
     if (!splash) return;
@@ -160,7 +136,7 @@
   function initYear() { document.querySelectorAll("[data-year]").forEach(function (el) { el.textContent = new Date().getFullYear(); }); }
 
   function boot() {
-    safe(initContact, "contact"); safe(initBookingModal, "booking modal"); safe(initSplash, "splash"); safe(initNavigation, "navigation"); safe(initMotion, "motion"); safe(initSafetyReveal, "safety reveal"); safe(loadYouTubeStats, "counters"); safe(initMagnetic, "magnetic"); safe(initMarqueeGallery, "marquee gallery"); safe(initGalleryLinks, "gallery links"); safe(initYear, "year");
+    safe(initContact, "contact"); safe(initSplash, "splash"); safe(initNavigation, "navigation"); safe(initMotion, "motion"); safe(initSafetyReveal, "safety reveal"); safe(loadYouTubeStats, "counters"); safe(initMagnetic, "magnetic"); safe(initMarqueeGallery, "marquee gallery"); safe(initGalleryLinks, "gallery links"); safe(initYear, "year");
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
 })();
