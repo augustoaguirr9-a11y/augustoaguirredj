@@ -11,6 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="preload" as="image" href="assets/img/hero-portrait.webp" fetchpriority="high">
   <link rel="stylesheet" href="styles.css?v=20260807">
+  <link rel="stylesheet" href="youtube-feature.css?v=20261005">
   <script defer src="lib/gsap.min.js?v=20260807"></script>
   <script defer src="lib/ScrollTrigger.min.js?v=20260807"></script>
   <script defer src="lib/manifest.js?v=20260807"></script>
@@ -88,6 +89,10 @@
       <div class="impact-inner">
         <div class="section-label reveal"><span>03</span> Los números hablan solos</div>
         <h2 id="impact-title" class="impact-intro reveal">La música llega<br>más <em>lejos.</em></h2>
+        <aside class="impact-youtube reveal" aria-label="Video destacado de YouTube">
+          <div class="impact-youtube-meta"><span>Video destacado</span><a href="https://www.youtube.com/@AugustoAguirredj" target="_blank" rel="noopener">YouTube ↗</a></div>
+          <div class="impact-youtube-frame"><iframe title="Video destacado de Augusto Aguirre en YouTube" src="https://www.youtube-nocookie.com/embed?listType=search&amp;list=Augusto%20Aguirre%20DJ" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+        </aside>
         <div class="stat-grid">
           <div class="stat reveal"><strong data-count="30.9" data-suffix="K">30.9K</strong><span>Oyentes mensuales en Spotify</span></div>
           <div class="stat reveal"><strong data-count="4.99" data-suffix="M">4.99M</strong><span>Visualizaciones en YouTube</span></div>
@@ -101,18 +106,12 @@
         <div class="section-label reveal"><span>04</span> Escuchá ahora</div>
         <h2 id="music-title" class="giant-title reveal">Música<br>en movimiento.</h2>
       </div>
-      <div class="music-grid">
+      <div class="music-grid music-grid--spotify">
         <article class="platform-card spotify reveal">
           <div class="platform-top"><span class="platform-icon">◉</span><span>01 / Música</span></div>
           <div><h3>Spotify</h3><p>Sets, lanzamientos y remixes que siguen sonando donde haya una pista.</p></div>
           <iframe class="spotify-player" title="Spotify — Augusto Aguirre" src="https://open.spotify.com/embed/artist/2VBRJhThzMyWPxgh1jh5KB?utm_source=generator" width="100%" height="152" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
           <a href="https://open.spotify.com/intl-es/artist/2VBRJhThzMyWPxgh1jh5KB?si=ebc72816aef44ba2" target="_blank" rel="noopener" class="platform-link">Escuchar en Spotify <span>↗</span></a>
-        </article>
-        <article class="platform-card youtube reveal">
-          <div class="platform-top"><span class="platform-icon">▶</span><span>02 / Videos</span></div>
-          <div><h3>YouTube</h3><p>Visuales de show, performances en vivo y la energía desde el otro lado de la cabina.</p></div>
-          <iframe class="youtube-player" title="YouTube — Augusto Aguirre" src="https://www.youtube-nocookie.com/embed?listType=search&amp;list=Augusto%20Aguirre%20DJ" width="100%" height="152" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-          <a href="https://www.youtube.com/@AugustoAguirredj" target="_blank" rel="noopener" class="platform-link">Ver en YouTube <span>↗</span></a>
         </article>
       </div>
     </section>
