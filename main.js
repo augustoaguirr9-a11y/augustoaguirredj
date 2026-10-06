@@ -1,4 +1,4 @@
-(function () {
+﻿(function () {
   "use strict";
 
   function safe(fn, name) { try { fn(); } catch (error) { console.warn("[Augusto Aguirre] " + name, error); } }
@@ -7,6 +7,30 @@
     var link = window.__BRAND__ && window.__BRAND__.contact.whatsapp;
     if (!link) return;
     document.querySelectorAll("[data-whatsapp]").forEach(function (el) { el.href = link; });
+  }
+
+  function initBookingModal() {
+    var modal = document.querySelector("[data-booking-modal]");
+    if (!modal) return;
+    var close = modal.querySelector("[data-booking-modal-close]");
+    var form = modal.querySelector("[data-booking-form]");
+    function dismiss() { modal.classList.add("is-closed"); }
+    if (close) close.addEventListener("click", dismiss);
+    modal.addEventListener("click", function (event) { if (event.target === modal) dismiss(); });
+    window.addEventListener("keydown", function (event) { if (event.key === "Escape") dismiss(); });
+    if (!form) return;
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      var data = new FormData(form);
+      var fields = [
+        ["Nombre", data.get("nombre")], ["Email", data.get("email")], ["Tel├®fono", data.get("telefono")],
+        ["Fecha", data.get("fecha")], ["Tipo de evento", data.get("evento")], ["Venue / ciudad", data.get("venue")], ["Mensaje", data.get("mensaje") || "-"]
+      ];
+      var message = "Hola Augusto, quiero consultar una fecha.\n\n" + fields.map(function (field) { return field[0] + ": " + field[1]; }).join("\n");
+      var source = window.__BRAND__ && window.__BRAND__.contact.whatsapp;
+      var url = (source || "https://wa.me/").split("?")[0] + "?text=" + encodeURIComponent(message);
+      window.open(url, "_blank", "noopener");
+    });
   }
 
   function initSplash() {
@@ -65,17 +89,24 @@
   }
 
   function initCounters() {
-    document.querySelectorAll("[data-count]").forEach(function (el) {
-      var hasStarted = false;
-      var start = function () {
-        if (hasStarted) return;
-        hasStarted = true;
+    var section = document.querySelector(".impact");
+    var counters = Array.prototype.slice.call(document.querySelectorAll("[data-count]"));
+    if (!section || !counters.length) return;
+    function animate() {
+      counters.forEach(function (el) {
+        if (el._counterFrame) cancelAnimationFrame(el._counterFrame);
         var end = Number(el.dataset.count); var suffix = el.dataset.suffix || ""; var decimals = (String(el.dataset.count).split(".")[1] || "").length; var began = performance.now();
-        function tick(now) { var progress = Math.min((now - began) / 1500, 1); var value = end * (1 - Math.pow(1 - progress, 3)); el.textContent = (decimals ? value.toFixed(decimals) : Math.round(value)) + suffix; if (progress < 1) requestAnimationFrame(tick); }
-        requestAnimationFrame(tick);
-      };
-      if (window.IntersectionObserver) new IntersectionObserver(function (entries, observer) { entries.forEach(function (entry) { if (entry.isIntersecting) { start(); observer.unobserve(el); } }); }, { threshold: 0.05 }).observe(el); else start();
-    });
+        el.textContent = "0" + suffix;
+        function tick(now) {
+          var progress = Math.min((now - began) / 1500, 1); var value = end * (1 - Math.pow(1 - progress, 3));
+          el.textContent = (decimals ? value.toFixed(decimals) : Math.round(value)) + suffix;
+          if (progress < 1) el._counterFrame = requestAnimationFrame(tick); else el._counterFrame = null;
+        }
+        el._counterFrame = requestAnimationFrame(tick);
+      });
+    }
+    if (!window.IntersectionObserver) { animate(); return; }
+    new IntersectionObserver(function (entries) { entries.forEach(function (entry) { if (entry.isIntersecting) animate(); }); }, { threshold: 0.05 }).observe(section);
   }
 
   function initMagnetic() {
@@ -122,7 +153,7 @@
       var isClone = Boolean(card.closest('[aria-hidden="true"]'));
       card.setAttribute("role", "link");
       card.setAttribute("tabindex", isClone ? "-1" : "0");
-      card.setAttribute("aria-label", "Ver mÃ¡s fotos de Augusto Aguirre en Instagram");
+      card.setAttribute("aria-label", "Ver m├â┬ís fotos de Augusto Aguirre en Instagram");
       card.addEventListener("click", function () { window.open(instagram, "_blank", "noopener"); });
       card.addEventListener("keydown", function (event) {
         if (event.key === "Enter" || event.key === " ") {
@@ -136,12 +167,12 @@
   function initYear() { document.querySelectorAll("[data-year]").forEach(function (el) { el.textContent = new Date().getFullYear(); }); }
 
   function boot() {
-    safe(initContact, "contact"); safe(initSplash, "splash"); safe(initNavigation, "navigation"); safe(initMotion, "motion"); safe(initSafetyReveal, "safety reveal"); safe(loadYouTubeStats, "counters"); safe(initMagnetic, "magnetic"); safe(initMarqueeGallery, "marquee gallery"); safe(initGalleryLinks, "gallery links"); safe(initYear, "year");
+    safe(initContact, "contact"); safe(initBookingModal, "booking modal"); safe(initSplash, "splash"); safe(initNavigation, "navigation"); safe(initMotion, "motion"); safe(initSafetyReveal, "safety reveal"); safe(initCounters, "counters"); safe(loadYouTubeStats, "YouTube stats"); safe(initMagnetic, "magnetic"); safe(initMarqueeGallery, "marquee gallery"); safe(initGalleryLinks, "gallery links"); safe(initYear, "year");
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
 })();
 
-/* YouTube stats â€” actualizaciÃ³n automÃ¡tica */
+/* YouTube stats ├óÔé¼ÔÇØ actualizaci├â┬│n autom├â┬ítica */
 async function loadYouTubeStats() {
   try {
     const response = await fetch("/api/youtube-stats");
@@ -182,7 +213,7 @@ async function loadYouTubeStats() {
 
       counter.dataset.suffix = suffix;
 
-      /* Reiniciar la animación */
+      /* Reiniciar la animaci├│n */
       counter.textContent = "0" + suffix;
 
       const end = Number(counter.dataset.count);
@@ -207,6 +238,7 @@ async function loadYouTubeStats() {
     });
 
   } catch (error) {
-    console.warn("No se pudieron actualizar las estadísticas de YouTube:", error);
+    console.warn("No se pudieron actualizar las estad├¡sticas de YouTube:", error);
   }
 }
+
